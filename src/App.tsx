@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import createSea from "./utils/createSea";
 import createRandomBoat from "./utils/createRandomBoat";
 
 function App() {
+  const inputRef = useRef<HTMLInputElement>(document.createElement('input'))
+  const attackBtnRef = useRef<HTMLButtonElement>(document.createElement('button'))
+
   const [hiddenSea, setHiddenSea] = useState<string[][]>([]);
   const [publicSea, setPublicSea] = useState<string[][]>([]);
+  const [shots, setShots] = useState<string[]>([]);
 
   useEffect(() => {
     let sea = createSea(10, 10);
@@ -20,8 +24,14 @@ function App() {
     let sea = createSea(10, 10);
     setPublicSea(sea);
   }, []);
-  console.log(hiddenSea);
 
+
+  attackBtnRef.current.onclick = function(){
+    const inputValue = inputRef.current.value
+    setShots([...shots, inputValue])
+  }
+  console.log(shots, 'shotss');
+  
   const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
   return (
     <div className="App">
@@ -75,6 +85,10 @@ function App() {
             </div>
           );
         })}
+      </div>
+      <div>
+        <input ref={inputRef} type="text" placeholder='A1'/>
+        <button ref={attackBtnRef} type='button'>Attack</button>
       </div>
       <div>
         <h3>Sea</h3>
