@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import createSea from "./utils/createSea";
 import createRandomBoat from "./utils/createRandomBoat";
+import attackPosition from "./utils/attackPosition";
 
 function App() {
   const inputRef = useRef<HTMLInputElement>(document.createElement('input'))
@@ -20,17 +21,26 @@ function App() {
     setHiddenSea(sea);
   }, []);
 
-  useEffect(() => {
+  useEffect(()=>{
     let sea = createSea(10, 10);
-    setPublicSea(sea);
-  }, []);
+    setPublicSea(sea)
+  },[])
 
 
   attackBtnRef.current.onclick = function(){
     const inputValue = inputRef.current.value
-    setShots([...shots, inputValue])
+    const allshots = [...shots, inputValue]
+    console.log(allshots, 'all shots');
+    
+    setShots(allshots)
+    const mysea = attackPosition(publicSea, hiddenSea, allshots)
+    setPublicSea(mysea)
   }
-  console.log(shots, 'shotss');
+
+
+
+  
+  console.log('some');
   
   const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
   return (
@@ -38,9 +48,9 @@ function App() {
      <div>
         <h3>Hidden Part</h3>
         <div style={{ display: "flex", margin: "1px" }}>
-              {[0, 1,2,3,4,5,6,7,8,9,10].map((item) => {
+              {[0, 1,2,3,4,5,6,7,8,9,10].map((item,i) => {
                 return (
-                  <div
+                  <div key={i}
                     style={{
                       width: "30px",
                       height: "30px",
@@ -56,7 +66,7 @@ function App() {
             </div>
         {hiddenSea.map((sea, index) => {
           return (
-            <div style={{ display: "flex", margin: "1px" }}>
+            <div key={index} style={{ display: "flex", margin: "1px" }}>
                <div
                     style={{
                       width: "30px",
@@ -67,9 +77,9 @@ function App() {
                   >
                     {alphabet[index]}
                   </div>
-              {sea.map((item) => {
+              {sea.map((item, i) => {
                 return (
-                  <div
+                  <div key={i}
                     style={{
                       width: "30px",
                       height: "30px",
@@ -93,9 +103,9 @@ function App() {
       <div>
         <h3>Sea</h3>
         <div style={{ display: "flex", margin: "1px" }}>
-              {[0, 1,2,3,4,5,6,7,8,9,10].map((item) => {
+              {[0, 1,2,3,4,5,6,7,8,9,10].map((item, i) => {
                 return (
-                  <div
+                  <div key={i}
                     style={{
                       width: "30px",
                       height: "30px",
@@ -111,7 +121,7 @@ function App() {
             </div>
         {publicSea.map((sea, index) => {
           return (
-            <div style={{ display: "flex", margin: "1px" }}>
+            <div key={index} style={{ display: "flex", margin: "1px" }}>
                <div
                     style={{
                       width: "30px",
@@ -122,13 +132,13 @@ function App() {
                   >
                     {alphabet[index]}
                   </div>
-              {sea.map((item) => {
+              {sea.map((item, i) => {
                 return (
-                  <div
+                  <div key={i}
                     style={{
                       width: "30px",
                       height: "30px",
-                      background: "#e59191",
+                      background:`${item=='x'?'rgb(231 103 103)':`${item =='-'?'#70a580': '#e59191'}`}` ,
                       margin: "1px",
                     }}
                   >
