@@ -1,11 +1,13 @@
-const createRandomBoat = (sea:string[][], square:number, amount:number) =>{
+const createRandomBoat = (sea:string[][], square:number,) =>{
    let enemySea:any = sea
    const row = enemySea.length
    let random = Math.floor(Math.random()*row) // 0 - 9
    const isXAxis = (Math.floor(Math.random()*2)+1) % 2 == 0 ? true : false // Boat orientation, x axis or y axis
-   console.log(isXAxis?"x axis":"y axis");
    let boatCreated = false
+
+   // Find empty shell then create Battleship  or Destroyer (Don't overlap)
    while(!boatCreated){
+      // Creating Battleship  or Destroyer on X Axis
       if(isXAxis){
          const  start = Math.floor(Math.random()*square)
          const sliced = enemySea[random].slice(start, start+square)
@@ -21,6 +23,7 @@ const createRandomBoat = (sea:string[][], square:number, amount:number) =>{
          }
       }
       
+      // Creating Battleship  or Destroyer on Y Axis
       if(!isXAxis){
          const  start = Math.floor(Math.random()*square)
          const shells = []
