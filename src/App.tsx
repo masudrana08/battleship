@@ -4,6 +4,7 @@ import "./App.css";
 import createSea from "./utils/createSea";
 import createRandomBoat from "./utils/createRandomBoat";
 import attackPosition from "./utils/attackPosition";
+import isWin from "./utils/isWin";
 
 function App() {
   const inputRef = useRef<HTMLInputElement>(document.createElement('input'))
@@ -12,6 +13,7 @@ function App() {
   const [hiddenSea, setHiddenSea] = useState<string[][]>([]);
   const [publicSea, setPublicSea] = useState<string[][]>([]);
   const [shots, setShots] = useState<string[]>([]);
+  const [win, setWin] = useState<boolean>(false);
 
   useEffect(() => {
     let sea = createSea(10, 10);
@@ -33,14 +35,12 @@ function App() {
     console.log(allshots, 'all shots');
     
     setShots(allshots)
-    const mysea = attackPosition(publicSea, hiddenSea, allshots)
-    setPublicSea(mysea)
+    const myPublicSea = attackPosition(publicSea, hiddenSea, allshots)
+    setPublicSea(myPublicSea)
+    const win = isWin(myPublicSea, hiddenSea)
+    setWin(win)
   }
 
-
-
-  
-  console.log('some');
   
   const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
   return (
@@ -95,6 +95,11 @@ function App() {
             </div>
           );
         })}
+      </div>
+      <div>
+        {
+          win && <h2 style={{color:'green'}}>Winner is won on shot {shots.length}</h2>
+        }
       </div>
       <div>
         <input ref={inputRef} type="text" placeholder='A1'/>
